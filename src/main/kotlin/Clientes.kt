@@ -1,7 +1,5 @@
-import java.sql.*
-
 //funcion para listar clientes -> READ
-fun readClientes() {
+fun readClientes(num_clie: Int, empresa: String, rep_clie: Int, limit_clie: Double) {
     val sql = "SELECT num_clie, empresa, rep_clie, limite_credito FROM clientes"
     Database.getConnection()?.use { conn ->
         conn.createStatement().use {
@@ -19,23 +17,23 @@ fun readClientes() {
     }
 }
 
-fun updateClientes(newEmpresa: String, new_limite_credito: Double) {
+fun updateClientes(newClie: Int, new_limite_credito: Double) {
    val sql = "UPDATE clientes SET empresa = ? WHERE limite_credito = ? "
     Database.getConnection()?.use { conn ->
         conn.prepareStatement(sql).use {
-            it.setString(1, newEmpresa)
+            it.setInt(1, newClie)
             it.setDouble(2, new_limite_credito)
             it.executeUpdate()
-            println("Clientes Updated: Nueva empresa $newEmpresa - Nuevo límite credito: $new_limite_credito")
+            println("Clientes Updated: Nueva empresa $newClie - Nuevo límite credito: $new_limite_credito")
         }
     }
 }
 
-fun deleteClientes(num_clie: Double) {
+fun deleteClientes(num_clie: Int) {
     val sql = "DELETE FROM clientes WHERE num_clie = ? "
     Database.getConnection()?.use { conn ->
         conn.prepareStatement(sql).use {
-            it.setDouble(1, num_clie)
+            it.setInt(1, num_clie)
             it.executeUpdate()
             println("Cliente con número $num_clie ha sido eliminado correctamente")
         }

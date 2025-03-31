@@ -7,6 +7,10 @@ import javafx.stage.Stage
 import kotlin.math.sqrt
 
 
+private fun GUIAppClients.listarClientes() {
+    TODO("Not yet implemented")
+}
+
 class GUIAppClients: Application() {
 
     private var currentOffset = 0 // Para paginar la lista de clientes
@@ -32,37 +36,58 @@ class GUIAppClients: Application() {
             container.children.setAll(operationSelector)
             when (selected) {
                 "Insertar" -> container.children.addAll(numClie, empresa, repClie, limitClie)
-                "Actualizar" -> container.children.addAll(empresa, limitClie)
-                "Eliminar" -> container.children.addAll(numClie, empresa, repClie, limitClie)
-                "Listar" -> container.children.addAll(numClie, empresa, limitClie)
+                "Actualizar" -> container.children.addAll(empresa, limitClie, executeButton, output)
+                "Eliminar" -> container.children.addAll(numClie, executeButton, output)
+                "Listar" -> container.children.addAll(executeButton, output)
             }
         }
 
         executeButton.setOnAction {
-            when(operationSelector.value) {
+            when (operationSelector.value) {
                 "Insertar" -> {
-                    if()
-                }
-            }
-        }
-    }
-        //mostrar clientes -> READ
-        private fun readClientes(): String {
-            val sql= "SELECT num_clie, empresa, rep_clie, limite_credito FROM clientes"
-            val builder= StringBuilder(" Clientes: \n")
-            try {
-                Database.getConnection()?.use { conn ->
-                    conn.createStatement().use { stmt ->
-                        val resultado= stmt.executeQuery(sql)
-                        var found= false
-                        while(resultado.next()){
-                            found=true
-                            builder.append("${resultado.getDouble(num_clie)} - ${resultado.getString(repClie)} - ${resultado.getString(limitClie)}\n")
-                        }
+                    if (numClie.text.isNotBlank() && empresa.text.isNotBlank() && repClie.text.isNotBlank() && limitClie.text.isNotBlank()) {
+                        readClientes(
+                            numClie.text.toInt(),
+                            empresa.text,
+                            repClie.text.toInt(),
+                            limitClie.text.toDouble()
+                        )
+                        output.text = "✅ Cliente insertado correctamente."
+                        numClie.clear(); empresa.clear(); repClie.clear(); limitClie.clear()
+                    } else {
+                        output.text = "❌ Todos los campos son obligatorios."
                     }
                 }
+
+                "Actualizar" -> {
+                    val id = numClie.text.toIntOrNull()
+                    if (id != null && limitClie.text.isNotBlank()) {
+                        updateClientes(id, limitClie.text.toDouble())
+                        output.text = "✅ Email actualizado."
+                        numClie.clear(); limitClie.clear()
+                    } else {
+                        output.text = "❌ ID inválido o email vacío."
+                    }
+                }
+
+                "Eliminar" -> {
+                    val id = numClie.text.toIntOrNull()
+                    if (id != null) {
+                        deleteClientes(id)
+                        output.text = "Cliente eliminado"
+                        numClie.clear()
+                    } else {
+                        output.text = "ID invalido"
+                    }
+                }
+
+                "Listar" -> {
+                    output.text = listarClientes()
+                }
             }
         }
+    }
+    private fun listarClientes() {
 
     }
-
+}
