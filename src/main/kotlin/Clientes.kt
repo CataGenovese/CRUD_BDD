@@ -1,6 +1,7 @@
 //funcion para listar clientes -> READ
-fun readClientes(num_clie: Int, empresa: String, rep_clie: Int, limit_clie: Double) {
-    val sql = "SELECT num_clie, empresa, rep_clie, limite_credito FROM clientes"
+fun listarClientes(num_clie: Int, empresa: String, rep_clie: Int, limit_clie: Double) {
+    val sql = "INSERT INTO clientes (num_clie, empresa, rep_clie, limite_credito) VALUES (?, ?, ?, ?)"
+
     Database.getConnection()?.use { conn ->
         conn.createStatement().use {
             val result = it.executeQuery(sql)
@@ -18,11 +19,11 @@ fun readClientes(num_clie: Int, empresa: String, rep_clie: Int, limit_clie: Doub
 }
 
 fun updateClientes(newClie: Int, new_limite_credito: Double) {
-   val sql = "UPDATE clientes SET empresa = ? WHERE limite_credito = ? "
+    val sql = "UPDATE clientes SET limite_credito = ? WHERE num_clie = ? "
     Database.getConnection()?.use { conn ->
         conn.prepareStatement(sql).use {
-            it.setInt(1, newClie)
-            it.setDouble(2, new_limite_credito)
+            it.setDouble(1, new_limite_credito)
+            it.setInt(2, newClie)
             it.executeUpdate()
             println("Clientes Updated: Nueva empresa $newClie - Nuevo límite credito: $new_limite_credito")
         }
@@ -40,11 +41,11 @@ fun deleteClientes(num_clie: Int) {
     }
 }
 
-fun crearteCliente(num_clie: Double, empresa: String, rep_clie: Int, limitite_credito: Double) {
-    val sql= "INSERT INTO clientes(num_clie, empresa, rep_clie, limite_credito) VALUES (?, ?, ?, ?, ?)"
+fun insertarCliente(num_clie: Int, empresa: String, rep_clie: Int, limitite_credito: Double) {
+    val sql= "INSERT INTO clientes(num_clie, empresa, rep_clie, limite_credito) VALUES (?, ?, ?, ?)"
     Database.getConnection()?.use { conn ->
         conn.prepareStatement(sql).use {
-            it.setDouble(1, num_clie)
+            it.setInt(1, num_clie)
             it.setString(2, empresa)
             it.setInt(3, rep_clie)
             it.setDouble(4, limitite_credito)

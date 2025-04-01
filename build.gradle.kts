@@ -10,6 +10,8 @@ repositories {
 
 dependencies {
     implementation("org.postgresql:postgresql:42.5.0")
+    implementation("org.openjfx:javafx-controls:21")
+    implementation("org.openjfx:javafx-fxml:21")
 }
 
 javafx {
