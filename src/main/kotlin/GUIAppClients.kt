@@ -5,23 +5,25 @@ import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 
-
+// Clase principal de la aplicación con interfaz gráfica
 class GUIAppClients: Application() {
 
     private var currentOffset = 0 // Para paginar la lista de clientes
 
     override fun start(stage: Stage) {
+        // ComboBox para seleccionar qué operación se quiere hacer
         val operationSelector = ComboBox<String>()
         operationSelector.items.addAll(listOf("Insertar", "Actualizar", "Eliminar", "Listar"))
         operationSelector.value = "Insertar"
 
+        // Campos de entrada para los datos del cliente
         val numClie = TextField().apply { promptText = "Num Cliente" }
         val empresa = TextField().apply { promptText = "Empresa" }
         val repClie = TextField().apply { promptText = "Representante de cliente" }
         val limitClie = TextField().apply { promptText = "Limite credito" }
 
-        val output = Label()
-        val executeButton = Button("Ejecutar")
+        val output = Label() // Para mostrar mensajes de salida
+        val executeButton = Button("Ejecutar") // Botón para ejecutar la acción
 
         val container = VBox(10.0)
         container.padding = Insets(20.0)
@@ -36,26 +38,28 @@ class GUIAppClients: Application() {
                 "Listar" -> container.children.addAll(executeButton, output)
             }
         }
-
+        // Lógica cuando se presiona el botón "Ejecutar"
         executeButton.setOnAction {
             when (operationSelector.value) {
                 "Insertar" -> {
                     if (numClie.text.isNotBlank() && empresa.text.isNotBlank() && repClie.text.isNotBlank() && limitClie.text.isNotBlank()) {
                         insertarCliente(numClie.text.toInt(), empresa.text, repClie.text.toInt(), limitClie.text.toDouble())
-                        output.text = "✅ Cliente insertado correctamente."
+                        output.text = "Cliente insertado correctamente."
                         numClie.clear(); empresa.clear(); repClie.clear(); limitClie.clear()
                     } else {
-                        output.text = "❌ Todos los campos son obligatorios."
+                        output.text = "Todos los campos son obligatorios."
                     }
                 }
                 "Actualizar" -> {
                     val id = numClie.text.toIntOrNull()
+                    // Verifica que todos los campos estén completos
                     if (id != null && limitClie.text.isNotBlank()) {
                         updateClientes(id, limitClie.text.toDouble())
-                        output.text = "✅ Email actualizado."
+                        output.text = "Cliente actualizado correctamente :)."
+                        // Limpia los campos
                         numClie.clear(); limitClie.clear()
                     } else {
-                        output.text = "❌ ID inválido o email vacío."
+                        output.text = "ID inválido."
                     }
                 }
                 "Eliminar" -> {
@@ -69,11 +73,11 @@ class GUIAppClients: Application() {
                     }
                 }
                 "Listar" -> {
-                    output.text = readClientes()
+                    output.text = listarClientes()
                 }
             }
         }
-        // Cambiar formulario al cambiar operación
+        // Cuando se cambia la opción del combo box, se actualiza la vista
         operationSelector.setOnAction {
             updateClientes(operationSelector.value)
         }
