@@ -6,7 +6,7 @@ Este proyecto tiene como objetivo gestionar una base de datos de la tabla client
 Database Object: Se encarga de generar la conexión a la base de datos. Dentro de este archivo se encuentra la lógica para conectarse y desconectarse de la base de datos training_kotlin
 
 
-GUIAppClients: Esta es la parte visual del proyecto donde los usuarios pueden interactuar con la base de datos. Gracias a JavaFX, se crea una interfaz gráfica con las 4 operaciones crud:
+GUIApp: Esta es la parte visual del proyecto donde los usuarios pueden interactuar con la base de datos. Gracias a JavaFX, se crea una interfaz gráfica con las 4 operaciones crud:
 
 ## Operaciones CRUD
 
@@ -26,3 +26,5 @@ Según la operación seleccionada, se muestran diferentes campos de entrada.
 El usuario puede ingresar los datos correspondientes y presionar el botón Ejecutar para realizar la acción.
 
 El resultado de la operación se muestra en la interfaz para que el usuario pueda ver si la operación fue exitosa o si hubo algún error.
+
+**`Repetimos el procedimiento con la tabla oficinas`**
